@@ -164,12 +164,12 @@ test("contentChain sees provenance audits, isolates selected deliveries, tag ove
   const { audit } = await import("@aihot/backend/audit");
   const id = await article();
   await sql`INSERT INTO analyses (article_id, input_revision, origin, relevance, summary_zh, tags, subjects, selected)
-            VALUES (${id}, 1, 'rule', 'pass', '摘要', ARRAY['模型发布'], ARRAY['openai'], false)`;
+            VALUES (${id}, 1, 'rule', 'pass', '摘要', ARRAY['新品上市'], ARRAY['menicon'], false)`;
   await sql`INSERT INTO editorial_overrides (article_id, fields, reason, updated_by)
-            VALUES (${id}, ${sql.json({ tags: ["开源/仓库"] })}, '人工改标签', 'test')`;
+            VALUES (${id}, ${sql.json({ tags: ["技术进展"] })}, '人工改标签', 'test')`;
   await publishArticle(id);
   const [pub] = await sql<{ tags: string[] }[]>`SELECT tags FROM publications WHERE article_id = ${id}`;
-  assert.ok(pub!.tags.includes("开源/仓库") && pub!.tags.includes("entity:openai"), "manual display tags keep entity:* topic membership");
+  assert.ok(pub!.tags.includes("技术进展") && pub!.tags.includes("entity:menicon"), "manual display tags keep entity:* topic membership");
 
   await audit("system", "article.attribution", `content:${id}`, "provenance", { sourceId: "old" }, { sourceId: "new" });
   const target = `test-other-delivery-${T}`;

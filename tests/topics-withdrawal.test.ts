@@ -18,7 +18,7 @@ let corrected: string;
 before(async () => {
   ({ older, newer, corrected } = await withdrawalReports());
   // All scenarios share this one cold index, then exercise the cache without waiting a minute.
-  await loadTopicPage("minimax", 1);
+  await loadTopicPage("orthok", 1);
 });
 after(async () => {
   await stopBoss();
@@ -27,33 +27,33 @@ after(async () => {
 
 test("a withdrawn report leaves the topic page and the index while the topic index is still cached", async () => {
   // Both are read into the cached index.
-  const before = await loadTopicPage("minimax", 1);
+  const before = await loadTopicPage("orthok", 1);
   assert.ok(before?.items.some((i) => i.id === newer));
-  assert.equal((await listTopicSummaries()).topics.find((t) => t.slug === "minimax")?.latest?.title, `minimax 消息 2`);
+  assert.equal((await listTopicSummaries()).topics.find((t) => t.slug === "orthok")?.latest?.title, `orthok 消息 2`);
 
   await sql`UPDATE publications SET visibility = 'withdrawn' WHERE article_id = ${newer}`;
-  const page = await loadTopicPage("minimax", 1);
-  assert.equal(page?.topic.latest?.title, `minimax 消息 1`, "the page's last update");
-  assert.equal((await listTopicSummaries()).topics.find((t) => t.slug === "minimax")?.latest?.title, `minimax 消息 1`, "the index page's headline");
+  const page = await loadTopicPage("orthok", 1);
+  assert.equal(page?.topic.latest?.title, `orthok 消息 1`, "the page's last update");
+  assert.equal((await listTopicSummaries()).topics.find((t) => t.slug === "orthok")?.latest?.title, `orthok 消息 1`, "the index page's headline");
   assert.deepEqual(page?.items.map((i) => i.id), [older], "the list (rows were always checked again)");
 });
 
 test("a correction refreshes named content and its topic membership before the index expires", async () => {
-  const title = `Qwen 更正后的模型消息 ${T}`;
+  const title = `爱博医疗更正后的镜片消息 ${T}`;
   await overrideFields(corrected, { fields: { title }, version: 0, reason: "更正标题" }, "test-topics");
-  const retitled = await loadTopicPage("qwen", 1);
+  const retitled = await loadTopicPage("eyebright", 1);
   assert.equal(retitled?.items[0]?.title, title, "the list");
   assert.equal(retitled?.topic.latest?.title, title, "the page headline");
-  assert.equal((await listTopicSummaries()).topics.find((t) => t.slug === "qwen")?.latest?.title, title, "the directory headline");
+  assert.equal((await listTopicSummaries()).topics.find((t) => t.slug === "eyebright")?.latest?.title, title, "the directory headline");
 
-  await overrideFields(corrected, { fields: { category: "tip" }, version: 1, reason: "实际是教程" }, "test-topics");
-  const reclassified = await loadTopicPage("qwen", 1);
+  await overrideFields(corrected, { fields: { category: "opinion" }, version: 1, reason: "实际是行业解读" }, "test-topics");
+  const reclassified = await loadTopicPage("eyebright", 1);
   assert.equal(reclassified?.items[0]?.id, corrected, "it remains a selected report");
 
-  await overrideFields(corrected, { fields: { tags: ["教程/实践", "entity:kimi"] }, version: 2, reason: "更正主体公司" }, "test-topics");
-  const moved = await loadTopicPage("qwen", 1);
+  await overrideFields(corrected, { fields: { tags: ["行业解读", "entity:euclid"] }, version: 2, reason: "更正主体公司" }, "test-topics");
+  const moved = await loadTopicPage("eyebright", 1);
   assert.deepEqual(moved?.items, [], "the old topic list drops it");
   assert.equal(moved?.topic.latest, null, "the old topic headline drops it");
-  assert.equal((await listTopicSummaries()).topics.find((t) => t.slug === "qwen")?.latest, null, "the directory drops the old membership");
-  assert.equal((await loadTopicPage("kimi", 1, new Date()))?.items[0]?.id, corrected, "the corrected membership is retained");
+  assert.equal((await listTopicSummaries()).topics.find((t) => t.slug === "eyebright")?.latest, null, "the directory drops the old membership");
+  assert.equal((await loadTopicPage("euclid", 1, new Date()))?.items[0]?.id, corrected, "the corrected membership is retained");
 });

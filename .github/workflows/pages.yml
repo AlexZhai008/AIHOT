@@ -1,0 +1,142 @@
+name: Publish industry news
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Beijing time 00:17, 04:17, 08:17, 12:17, 16:17, 20:17.
+    - cron: '17 0,4,8,12,16,20 * * *'
+
+concurrency:
+  group: pages-publication
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build:
+    if: github.ref_name == github.event.repository.default_branch
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    permissions:
+      contents: read
+      actions: read
+    outputs:
+      publish: ${{ steps.mode.outputs.publish }}
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_PASSWORD: pages-job
+          POSTGRES_DB: aihot_pages
+        ports: ['5432:5432']
+        options: --health-cmd "pg_isready -U postgres" --health-interval 3s --health-retries 20
+    env:
+      DATABASE_URL: postgres://postgres:pages-job@127.0.0.1:5432/aihot_pages
+      SITE_URL: https://menicon.mollylisa.com
+    steps:
+      - name: Check publication mode
+        id: mode
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+        run: |
+          if [[ -n "$LLM_API_KEY" ]]; then
+            printf 'refresh=true\npublish=true\n' >> "$GITHUB_OUTPUT"
+          elif [[ "$EVENT_NAME" == workflow_dispatch ]]; then
+            printf 'refresh=false\npublish=true\n' >> "$GITHUB_OUTPUT"
+            echo '::notice::Publishing saved content only. Set LLM_API_KEY to enable scheduled collection and summaries.'
+          else
+            printf 'refresh=false\npublish=false\n' >> "$GITHUB_OUTPUT"
+            echo '::notice::Scheduled refresh is paused until the repository has LLM_API_KEY.'
+          fi
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        if: steps.mode.outputs.publish == 'true'
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        if: steps.mode.outputs.publish == 'true'
+        with:
+          node-version: 24
+          package-manager-cache: false
+      - name: Restore previous publication state
+        if: steps.mode.outputs.publish == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PAGES_STATE_KEY: ${{ secrets.PAGES_STATE_KEY }}
+          PG_CONTAINER: ${{ job.services.postgres.id }}
+        run: |
+          id=$(gh api "repos/$GITHUB_REPOSITORY/actions/artifacts?name=pages-state-v1&per_page=20" \
+            --jq '[.artifacts[] | select(.expired == false)] | sort_by(.created_at) | last | .id // empty')
+          if [[ -z "$id" ]]; then
+            echo 'No previous checkpoint available.'
+            exit 0
+          fi
+          test -n "$PAGES_STATE_KEY"
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/$id/zip" > "$RUNNER_TEMP/checkpoint.zip"
+          unzip -p "$RUNNER_TEMP/checkpoint.zip" pages-state.gpg |
+            gpg --batch --pinentry-mode loopback --passphrase-fd 3 --decrypt 3<<< "$PAGES_STATE_KEY" > "$RUNNER_TEMP/pages.dump"
+          docker exec -i "$PG_CONTAINER" pg_restore -U postgres -d aihot_pages --no-owner --no-privileges --exit-on-error < "$RUNNER_TEMP/pages.dump"
+          rm "$RUNNER_TEMP/pages.dump"
+      - name: Prepare publication database
+        if: steps.mode.outputs.publish == 'true'
+        run: |
+          npm ci --no-audit --no-fund
+          node scripts/migrate.ts
+          node scripts/seed.ts
+      - name: Collect and prepare news
+        if: steps.mode.outputs.refresh == 'true'
+        env:
+          COLLECT_ENABLED: 'true'
+          MODEL_CALLS_ENABLED: 'true'
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+          LLM_BASE_URL: ${{ vars.LLM_BASE_URL || 'https://api.openai.com/v1' }}
+          LLM_MODEL: ${{ vars.LLM_MODEL || 'gpt-4.1-mini' }}
+          PAGES_STATE_KEY: ${{ secrets.PAGES_STATE_KEY }}
+        run: |
+          test -n "$PAGES_STATE_KEY"
+          node scripts/refresh-pages.ts
+      - name: Export the public website
+        if: steps.mode.outputs.publish == 'true'
+        run: node scripts/export-pages.ts dist/pages
+      - name: Encrypt the database checkpoint
+        if: steps.mode.outputs.refresh == 'true'
+        env:
+          PAGES_STATE_KEY: ${{ secrets.PAGES_STATE_KEY }}
+          PG_CONTAINER: ${{ job.services.postgres.id }}
+        run: |
+          docker exec "$PG_CONTAINER" pg_dump -U postgres -d aihot_pages -Fc --no-owner --no-privileges |
+            gpg --batch --pinentry-mode loopback --passphrase-fd 3 --cipher-algo AES256 --symmetric \
+            --output "$RUNNER_TEMP/pages-state.gpg" 3<<< "$PAGES_STATE_KEY"
+      - name: Keep the encrypted checkpoint
+        if: steps.mode.outputs.refresh == 'true'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: pages-state-v1
+          path: ${{ runner.temp }}/pages-state.gpg
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 30
+      - name: Upload the static website
+        if: steps.mode.outputs.publish == 'true'
+        uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3
+        with:
+          path: dist/pages
+
+  deploy:
+    needs: build
+    if: needs.build.outputs.publish == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4

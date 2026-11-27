@@ -1,77 +1,52 @@
-// 英文版用的行业词：类别、标签、主题和公司的英文名。键是 taxonomy.ts、topics.json 里的中文写法或 key；
-// 换行业时和它们一起改。网页英文页和英文的公开接口都读这里，没写到的词照原样显示；tests/industry-english.standalone.test.ts 检查都写到了。
+// English labels for public outlets. Keys match the industry taxonomy and topic directory.
 import type { CATEGORIES } from "./taxonomy.ts";
 
 type CategoryKey = (typeof CATEGORIES)[number]["key"];
 
-/** 类别：筛选标签、分类 RSS 标题、日报栏目。 */
 export const CATEGORY_EN: Record<CategoryKey, { label: string; feedLabel: string; section: string }> = {
-  "ai-models": { label: "Models", feedLabel: "AI Models", section: "Model releases & updates" },
-  "ai-products": { label: "Products", feedLabel: "AI Products", section: "Product launches & updates" },
-  industry: { label: "Industry", feedLabel: "Industry News", section: "Industry news" },
-  paper: { label: "Papers", feedLabel: "Papers", section: "Research papers" },
-  tip: { label: "Tutorials", feedLabel: "Tutorials", section: "Tips & opinions" },
-  opinion: { label: "Opinion", feedLabel: "Opinion", section: "Tips & opinions" },
+  "product-launches": { label: "New products & approvals", feedLabel: "New products & approvals", section: "New products & approvals" },
+  market: { label: "Markets & channels", feedLabel: "Markets & channels", section: "Markets & channels" },
+  paper: { label: "Technology & research", feedLabel: "Technology & research", section: "Technology & research" },
+  conferences: { label: "Academic meetings", feedLabel: "Academic meetings", section: "Meetings & exhibitions" },
+  exhibitions: { label: "Trade exhibitions", feedLabel: "Trade exhibitions", section: "Meetings & exhibitions" },
+  industry: { label: "Industry & regulation", feedLabel: "Industry & regulation", section: "Industry & regulation" },
+  opinion: { label: "Industry analysis", feedLabel: "Industry analysis", section: "Industry analysis" },
 };
 
-/** 标签（含 TAG_DISPLAY 里给读者看的短词）。 */
 export const TAG_EN: Record<string, string> = {
-  产品更新: "Product updates", 模型发布: "Model releases", "论文/研究": "Research", 论文: "Papers", "开源/仓库": "Open source", 开源: "Open source",
-  "教程/实践": "Tutorials", 教程: "Tutorials", "现象/趋势": "Trends", 趋势: "Trends", 大佬观点: "Opinion", "评测/基准": "Benchmarks", 评测: "Benchmarks",
-  "安全/对齐": "Safety", 安全: "Safety", 行业动态: "Industry", "政策/监管": "Policy", 政策: "Policy", "非AI/通用工具": "General tools", 其他: "Other",
-  Agent: "Agents", 编码: "Coding", 推理: "Reasoning", 多模态: "Multimodal", 语音: "Voice", 视频: "Video", 图像生成: "Image generation", RAG: "RAG",
-  端侧: "On-device", "数据/训练": "Data & training", 数据与训练: "Data & training", 搜索: "Search", "部署/工程": "Engineering", 工程部署: "Engineering",
-  开源生态: "Open source", 具身智能: "Embodied AI", "MCP/工具调用": "MCP & tool use", "MCP 与工具调用": "MCP & tool use",
+  新品上市: "New launches", 产品获批: "Product approvals", 产品更新: "Product updates", 市场推广: "Marketing", 渠道合作: "Channel partnerships",
+  "论文/研究": "Research", 研究: "Research", 技术进展: "Technology", 学术会议: "Academic meetings", 行业展会: "Trade exhibitions",
+  "政策/监管": "Regulation", 监管: "Regulation", "安全/召回": "Safety & recalls", 安全与召回: "Safety & recalls",
+  行业动态: "Industry news", 行业解读: "Industry analysis", 其他: "Other",
+  角膜塑形镜: "Orthokeratology lenses", 护理液: "Lens care solutions", 硬性接触镜: "Rigid contact lenses", 近视管理: "Myopia management",
+  验配设备: "Lens fitting equipment", 镜片材料: "Lens materials", 镜片设计: "Lens design", 临床证据: "Clinical evidence",
+  目立康: "Menicon", 欧普康视: "OVCTEK", 爱博医疗: "Eyebright Medical", 库博光学: "CooperVision", 博士伦: "Bausch + Lomb", Euclid: "Euclid",
 };
 
-/** 主题（topics.json 的 slug）：名字和一句话介绍。 */
 export const TOPIC_EN: Record<string, { name: string; definition: string }> = {
-  openai: { name: "OpenAI / ChatGPT", definition: "The latest on GPT models, ChatGPT and Sora, plus OpenAI's strategy and people." },
-  anthropic: { name: "Anthropic / Claude", definition: "Claude models, Claude Code and Anthropic's products, research and company news." },
-  google: { name: "Google / Gemini", definition: "Gemini models and apps, Google DeepMind research and Google's AI products." },
-  deepseek: { name: "DeepSeek", definition: "DeepSeek's model releases, papers, open weights and API changes." },
-  qwen: { name: "Qwen", definition: "Alibaba's Qwen models, the Qwen app and Alibaba Cloud's AI news." },
-  kimi: { name: "Moonshot AI / Kimi", definition: "Kimi models and apps from Moonshot AI, and the company's news." },
-  minimax: { name: "MiniMax", definition: "MiniMax's models for text, speech, video and images, and its products." },
-  zhipu: { name: "Zhipu GLM", definition: "Zhipu AI's GLM models, Z.ai products and company news." },
-  xai: { name: "xAI / Grok", definition: "Grok models and apps from xAI, and the company's news." },
-  meta: { name: "Meta / Llama", definition: "Meta's AI models, Llama, Meta AI products and its superintelligence lab." },
-  microsoft: { name: "Microsoft / Copilot", definition: "Copilot, Microsoft's own models and its AI platform and research." },
-  nvidia: { name: "NVIDIA", definition: "NVIDIA's AI chips, systems, software and models, and company news." },
-  "hugging-face": { name: "Hugging Face", definition: "Hugging Face's platform, open-source libraries, models and datasets." },
-  cursor: { name: "Cursor", definition: "The Cursor AI code editor: releases, models and company news." },
-  openrouter: { name: "OpenRouter", definition: "OpenRouter's model marketplace, rankings and API changes." },
-  agent: { name: "Agents", definition: "AI agents that plan and act: products, frameworks, research and real-world use." },
-  coding: { name: "AI Coding", definition: "AI for writing software: coding models, coding agents, IDEs and how developers use them." },
-  reasoning: { name: "Reasoning", definition: "How models reason: reasoning models, test-time compute and the research behind them." },
-  multimodal: { name: "Multimodal", definition: "Models that see, hear and read together, and what they're used for." },
-  "image-gen": { name: "Image Generation", definition: "Image generation and editing models and products." },
-  video: { name: "AI Video", definition: "Video generation models, tools and how they're used." },
-  voice: { name: "Voice & Audio", definition: "Speech recognition, voice synthesis, voice agents and music generation." },
-  embodied: { name: "Embodied AI", definition: "Robots and AI in the physical world: models, hardware and research." },
-  "on-device": { name: "On-device AI", definition: "Small models and AI running on phones, laptops and other devices." },
-  "open-source": { name: "Open Source", definition: "Open-weight models, open-source AI projects and the community around them." },
-  engineering: { name: "Engineering", definition: "Serving, deploying and building with AI models in production." },
-  "data-training": { name: "Data & Training", definition: "Training data, training methods and the infrastructure behind new models." },
-  safety: { name: "Safety & Alignment", definition: "AI safety, alignment, security and misuse: research and incidents." },
-  mcp: { name: "MCP & Tool Use", definition: "The Model Context Protocol and how models call tools." },
-  "model-releases": { name: "Model Releases", definition: "New models and model updates from every lab." },
-  "product-updates": { name: "Product Updates", definition: "New AI products and features, and changes to existing ones." },
-  papers: { name: "Research Papers", definition: "Papers, technical reports, benchmarks and datasets." },
-  benchmarks: { name: "Benchmarks", definition: "New benchmarks, leaderboards and how models score on them." },
-  tutorials: { name: "Tutorials", definition: "How-tos, prompts, workflows and hands-on lessons you can reuse." },
-  opinions: { name: "Opinion", definition: "What leading people in AI think: essays, interviews and predictions." },
-  trends: { name: "Trends", definition: "Patterns across the AI world: adoption, markets and how things are changing." },
-  industry: { name: "Industry News", definition: "Funding, deals, people, partnerships, lawsuits and other company news." },
-  policy: { name: "Policy & Regulation", definition: "AI laws, regulation, government policy and their effects." },
+  menicon: { name: "Menicon", definition: "Public product, technology and business developments from Menicon." },
+  orthok: { name: "OVCTEK", definition: "Orthokeratology products, rigid lens care and sales channels." },
+  eyebright: { name: "Eyebright Medical", definition: "Orthokeratology and myopia management updates." },
+  coopervision: { name: "CooperVision", definition: "Products, clinical research and market activity in orthokeratology and myopia management." },
+  "bausch-lomb": { name: "Bausch + Lomb", definition: "Developments in rigid lens care and related contact lens products." },
+  euclid: { name: "Euclid", definition: "Orthokeratology products, research and sales channels." },
+  orthokeratology: { name: "Orthokeratology lenses", definition: "Lens design, development, approvals, launches and fitting." },
+  "lens-care": { name: "Lens care solutions", definition: "Cleaning, disinfection, storage and protein removal products for rigid lenses and orthokeratology." },
+  fitting: { name: "Lens fitting equipment", definition: "Corneal topography, measurement tools and fitting equipment." },
+  clinical: { name: "Clinical research", definition: "Clinical evidence on lenses, care products and myopia management." },
+  myopia: { name: "Myopia management", definition: "Orthokeratology and related myopia management options." },
+  launches: { name: "New products & approvals", definition: "Product launches, regulatory approvals and specification changes." },
+  promotion: { name: "Marketing & channels", definition: "Marketing campaigns, practitioner training, partnerships and distribution." },
+  technology: { name: "Technology", definition: "Lens design, materials, manufacturing and fitting technology." },
+  conferences: { name: "Academic meetings", definition: "Topics, programmes and calls for abstracts in optometry and specialty lenses." },
+  exhibitions: { name: "Trade exhibitions", definition: "Trade show schedules, exhibits and exhibitors." },
+  regulation: { name: "Regulation & recalls", definition: "Registration, safety, compliance and product recalls." },
 };
 
-/** 主题分组（topics.json 的 groups）。 */
 export const TOPIC_GROUP_EN: Record<string, { name: string; blurb: string }> = {
-  company: { name: "Companies & Models", blurb: "Follow the key companies: model releases, product changes and moves" },
-  field: { name: "Research Areas", blurb: "Go deep by area: agents, multimodal, embodied AI…" },
-  genre: { name: "Content Types", blurb: "Browse by kind: new models, papers, tutorials, opinion…" },
+  company: { name: "Companies & brands", blurb: "Public developments from Menicon and other industry companies." },
+  field: { name: "Products & technology", blurb: "Orthokeratology, lens care, fitting and clinical research." },
+  genre: { name: "Industry developments", blurb: "Launches, marketing, regulation, meetings and trade shows." },
 };
 
-/** 日报报头“N 个新模型”。 */
-export const RELEASE_UNIT_EN = { one: "new model", many: "new models" };
+export const RELEASE_UNIT_EN = { one: "new product", many: "new products" };

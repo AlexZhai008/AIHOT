@@ -30,7 +30,7 @@ export async function report(r: Report): Promise<string> {
   });
   await sql`UPDATE articles SET discovered_at = ${r.at}, timeline_at = ${r.at}, grouped_at = now() WHERE id = ${articleId}`;
   await sql`INSERT INTO analyses (article_id, input_revision, origin, relevance, category, title_zh, summary_zh, score, selected, subjects, tags)
-            VALUES (${articleId}, 1, 'rule', 'pass', ${r.category ?? "ai-models"}, ${r.title}, ${`摘要 ${n}`}, ${r.score ?? 80}, ${r.selected ?? true}, ${r.subjects ?? []}, ${[r.category === "ai-products" ? "产品更新" : r.category === "paper" ? "论文/研究" : r.category === "tip" ? "教程/实践" : r.category === "industry" ? "行业动态" : r.category === "opinion" ? "大佬观点" : "模型发布", ...(r.tags ?? [])]})`;
+            VALUES (${articleId}, 1, 'rule', 'pass', ${r.category ?? "product-launches"}, ${r.title}, ${`摘要 ${n}`}, ${r.score ?? 80}, ${r.selected ?? true}, ${r.subjects ?? []}, ${[r.category === "market" ? "市场推广" : r.category === "paper" ? "论文/研究" : r.category === "industry" ? "行业动态" : r.category === "opinion" ? "行业解读" : "新品上市", ...(r.tags ?? [])]})`;
   if (r.fact) await sql`INSERT INTO fact_articles (fact_id, article_id, role) VALUES (${r.fact}, ${articleId}, 'report')`;
   await publishArticle(articleId, { releasedAt: new Date(r.at.getTime() + 60_000) });
   return articleId;
@@ -39,11 +39,11 @@ export async function report(r: Report): Promise<string> {
 /** Reports used by withdrawal and correction scenarios in the topic directory and chronicle. */
 export async function withdrawalReports() {
   await sql`INSERT INTO sources (id, name, kind, tier, participation_mode, next_fetch_at) VALUES (${mediaSource}, 'Media', 'rss', 'T2', 'editorial', '2100-01-01')`;
-  const publish = (n: number, hoursAgo: number, subject = "minimax") => report({
+  const publish = (n: number, hoursAgo: number, subject = "orthok") => report({
     at: new Date(Date.now() - hoursAgo * 3600_000), originalTitle: `MiniMax report ${n}`,
     title: `${subject} 消息 ${n}`, subjects: [subject],
   });
-  return { older: await publish(1, 3), newer: await publish(2, 1), corrected: await publish(3, 2, "qwen") };
+  return { older: await publish(1, 3), newer: await publish(2, 1), corrected: await publish(3, 2, "eyebright") };
 }
 
 export async function story(title: string): Promise<{ id: number; publicId: string }> {

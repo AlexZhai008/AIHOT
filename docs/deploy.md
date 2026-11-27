@@ -1,5 +1,15 @@
 # 部署
 
+## GitHub Pages 定时版
+
+`Publish industry news` 工作流每天按北京时间 00:17、04:17、08:17、12:17、16:17、20:17 运行，也可手动触发。它使用现有采集、评分和归组流程，在生成公开页面前计算热点和到期报告。GitHub Actions 的排队和处理时间会影响实际发布时间。
+
+- 仓库 Settings → Pages 的 Source 选 GitHub Actions，Custom domain 填 `menicon.mollylisa.com`。
+- 仓库 Actions secrets 配置 `LLM_API_KEY` 和用于加密数据库检查点的 `PAGES_STATE_KEY`。模型默认使用 OpenAI 的 `gpt-4.1-mini`。使用其他 OpenAI 兼容服务时，设置同名仓库变量 `LLM_BASE_URL` 和 `LLM_MODEL`。
+- 模型密钥还未配置时，手动运行可发布站点框架或已有快照，定时任务会暂停采集。配置后手动运行一次即可开始收录。
+- 每轮从最近的加密检查点恢复文章和编辑历史。公开站点只上传静态页面和 RSS。检查点在 Actions 中保留 30 天，恢复既有历史需要原加密密钥和至少一份检查点。
+- Pages 版提供精选、全部动态、热点榜、主题、文章摘要和报告订阅。后台、反馈提交、实时 API 和 MCP 由容器部署版提供。
+
 ## 用 Docker（推荐）
 
 需要一台装了 Docker（带 Compose）的机器。云服务器建议至少 2 核、4 GB 内存，构建镜像时要用到。

@@ -1,204 +1,190 @@
 {
-  "$comment": "示范信源：首次启动时导入（scripts/seed.ts），已存在的不会被覆盖。之后在后台“信源”里新建、修改和暂停。字段说明见 docs/customize.md。",
+  "$comment": "待站点运营者确认的公开首批信源。仅展示摘要和原文链接。已有数据库的旧信源需在后台暂停。",
   "sources": [
     {
-      "id": "rss-openai-news",
-      "name": "OpenAI News",
-      "kind": "rss",
+      "id": "web-menicon-news",
+      "name": "目立康集团新闻",
+      "kind": "web_list",
       "config": {
-        "feedUrl": "https://openai.com/news/rss.xml",
+        "url": "https://www.menicon.com/corporate/news/author/menicon",
+        "itemSelector": ".blog-listings a.news-listing__post",
+        "linkSelector": "a.news-listing__post",
+        "titleSelector": ".blog-title",
+        "detail": {
+          "maxFetches": 12,
+          "publishedAtSelector": "time.blog-post__timestamp",
+          "publishedAtUtcOffset": "+00:00"
+        },
+        "allowUrlPrefixes": [
+          "https://www.menicon.com/corporate/news/"
+        ],
         "_aihot": {
-          "initialBackfillLimit": 8
+          "initialBackfillLimit": 12
         }
       },
       "tier": "T1",
-      "owner_entity_id": "openai",
       "participation_mode": "editorial",
-      "interval_minutes": 120,
+      "interval_minutes": 360,
       "tags": [
-        "官方"
-      ],
-      "site_fulltext": false,
-      "syndicate_fulltext": false
-    },
-    {
-      "id": "rss-google-deepmind",
-      "name": "Google DeepMind",
-      "kind": "rss",
-      "config": {
-        "feedUrl": "https://deepmind.google/blog/rss.xml",
-        "_aihot": {
-          "initialBackfillLimit": 8
-        }
-      },
-      "tier": "T1",
-      "owner_entity_id": "google",
-      "participation_mode": "editorial",
-      "interval_minutes": 120,
-      "tags": [
-        "官方"
-      ],
-      "site_fulltext": false,
-      "syndicate_fulltext": false
-    },
-    {
-      "id": "rss-google-research",
-      "name": "Google Research",
-      "kind": "rss",
-      "config": {
-        "feedUrl": "https://research.google/blog/rss/",
-        "_aihot": {
-          "initialBackfillLimit": 8
-        }
-      },
-      "tier": "T1",
-      "owner_entity_id": "google",
-      "participation_mode": "editorial",
-      "interval_minutes": 120,
-      "tags": [
-        "官方",
+        "产品",
+        "市场",
         "研究"
       ],
       "site_fulltext": false,
-      "syndicate_fulltext": false
+      "syndicate_fulltext": false,
+      "owner_entity_id": "menicon"
     },
     {
-      "id": "rss-hugging-face",
-      "name": "Hugging Face Blog",
-      "kind": "rss",
+      "id": "web-ovctek-news",
+      "name": "欧普康视公司动态",
+      "kind": "web_list",
       "config": {
-        "feedUrl": "https://huggingface.co/blog/feed.xml",
+        "url": "https://www.orthok.cn/index/news/index/id/2.html",
+        "itemSelector": ".lg-container .col-sm-4",
+        "linkSelector": ".hw1_img > a[href]",
+        "titleSelector": ".title-p",
+        "publishedAtSelector": ".title-p1",
+        "allowUrlPrefixes": [
+          "https://www.orthok.cn/index/news/detail/"
+        ],
         "_aihot": {
-          "initialBackfillLimit": 8
+          "initialBackfillLimit": 12
         }
       },
       "tier": "T1",
-      "owner_entity_id": "hugging-face",
       "participation_mode": "editorial",
-      "interval_minutes": 120,
+      "interval_minutes": 360,
       "tags": [
-        "官方",
-        "开源"
+        "产品",
+        "市场"
       ],
       "site_fulltext": false,
-      "syndicate_fulltext": false
+      "syndicate_fulltext": false,
+      "owner_entity_id": "orthok"
     },
     {
-      "id": "rss-microsoft-research",
-      "name": "Microsoft Research",
-      "kind": "rss",
+      "id": "web-eyebright-news",
+      "name": "爱博医疗公司新闻",
+      "kind": "web_list",
       "config": {
-        "feedUrl": "https://www.microsoft.com/en-us/research/feed/",
+        "url": "https://www.ebmedical.com/about/newscenter/news/",
+        "itemSelector": ".news-container .upnew > a[href]",
+        "linkSelector": "a[href]",
+        "titleSelector": "h3",
+        "publishedAtSelector": ".con_extra span",
+        "allowUrlPrefixes": [
+          "https://www.ebmedical.com/about/newscenter/news/"
+        ],
         "_aihot": {
-          "initialBackfillLimit": 8
+          "initialBackfillLimit": 12
         }
       },
       "tier": "T1",
-      "owner_entity_id": "microsoft",
       "participation_mode": "editorial",
-      "interval_minutes": 120,
+      "interval_minutes": 360,
       "tags": [
-        "官方",
+        "产品",
+        "市场"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "owner_entity_id": "eyebright"
+    },
+    {
+      "id": "web-coopervision-news",
+      "name": "库博光学新闻中心",
+      "kind": "web_list",
+      "config": {
+        "url": "https://coopervision.com/our-company/news-center/all",
+        "itemSelector": ".cv-press-release--teaser",
+        "linkSelector": ".cv-press-release--teaser__title a",
+        "titleSelector": ".cv-press-release--teaser__title a",
+        "publishedAtSelector": ".cv-press-release-date-item",
+        "allowUrlPrefixes": [
+          "https://coopervision.com/our-company/news-center/press-release/"
+        ],
+        "_aihot": {
+          "initialBackfillLimit": 12
+        }
+      },
+      "tier": "T1",
+      "participation_mode": "editorial",
+      "interval_minutes": 360,
+      "tags": [
+        "产品",
+        "市场",
         "研究"
       ],
       "site_fulltext": false,
-      "syndicate_fulltext": false
+      "syndicate_fulltext": false,
+      "owner_entity_id": "coopervision"
     },
     {
-      "id": "rss-nvidia-blog",
-      "name": "NVIDIA Blog",
-      "kind": "rss",
+      "id": "web-contact-lens-spectrum",
+      "name": "Contact Lens Spectrum 新闻",
+      "kind": "web_list",
       "config": {
-        "feedUrl": "https://blogs.nvidia.com/feed/",
+        "url": "https://www.clspectrum.com/news/",
+        "itemSelector": "article.card-copy",
+        "linkSelector": "h2 a[href]",
+        "titleSelector": "h2 a",
+        "publishedAtSelector": ".pub-source",
+        "allowUrlPrefixes": [
+          "https://www.clspectrum.com/news/"
+        ],
         "_aihot": {
-          "initialBackfillLimit": 8
+          "initialBackfillLimit": 12
         }
       },
-      "tier": "T1",
-      "owner_entity_id": "nvidia",
+      "tier": "T2",
       "participation_mode": "editorial",
-      "interval_minutes": 120,
+      "interval_minutes": 360,
       "tags": [
-        "官方"
+        "研究",
+        "学术会议"
       ],
       "site_fulltext": false,
       "syndicate_fulltext": false
     },
     {
-      "id": "rss-aws-ml",
-      "name": "AWS Machine Learning Blog",
-      "kind": "rss",
+      "id": "web-opti-press",
+      "name": "opti 国际光学展新闻稿",
+      "kind": "web_list",
       "config": {
-        "feedUrl": "https://aws.amazon.com/blogs/machine-learning/feed/",
+        "url": "https://www.opti.de/en/for-press",
+        "itemSelector": "article[aria-labelledby^=\"news-\"]",
+        "linkSelector": "h3 a[href]",
+        "titleSelector": "[itemprop=\"headline\"]",
+        "publishedAtSelector": "time[itemprop=\"datePublished\"]",
+        "allowUrlPrefixes": [
+          "https://www.opti.de/en/press/press-releases/"
+        ],
         "_aihot": {
-          "initialBackfillLimit": 8
+          "initialBackfillLimit": 12
         }
       },
       "tier": "T1",
-      "owner_entity_id": null,
       "participation_mode": "editorial",
-      "interval_minutes": 120,
+      "interval_minutes": 360,
       "tags": [
-        "官方",
-        "教程"
+        "行业展会"
       ],
       "site_fulltext": false,
       "syndicate_fulltext": false
     },
     {
-      "id": "rss-github-ai",
-      "name": "GitHub Blog · AI & ML",
+      "id": "rss-contact-lens-anterior-eye",
+      "name": "Contact Lens & Anterior Eye 期刊",
       "kind": "rss",
       "config": {
-        "feedUrl": "https://github.blog/ai-and-ml/feed/",
+        "feedUrl": "https://rss.sciencedirect.com/publication/science/13670484",
         "_aihot": {
-          "initialBackfillLimit": 8
+          "initialBackfillLimit": 12
         }
       },
       "tier": "T1",
-      "owner_entity_id": null,
       "participation_mode": "editorial",
-      "interval_minutes": 120,
-      "tags": [
-        "官方"
-      ],
-      "site_fulltext": false,
-      "syndicate_fulltext": false
-    },
-    {
-      "id": "rss-mistral",
-      "name": "Mistral AI",
-      "kind": "rss",
-      "config": {
-        "feedUrl": "https://mistral.ai/news/rss",
-        "_aihot": {
-          "initialBackfillLimit": 8
-        }
-      },
-      "tier": "T1",
-      "owner_entity_id": null,
-      "participation_mode": "editorial",
-      "interval_minutes": 120,
-      "tags": [
-        "官方"
-      ],
-      "site_fulltext": false,
-      "syndicate_fulltext": false
-    },
-    {
-      "id": "rss-bair",
-      "name": "Berkeley AI Research",
-      "kind": "rss",
-      "config": {
-        "feedUrl": "https://bair.berkeley.edu/blog/feed.xml",
-        "_aihot": {
-          "initialBackfillLimit": 8
-        }
-      },
-      "tier": "T1",
-      "owner_entity_id": null,
-      "participation_mode": "editorial",
-      "interval_minutes": 180,
+      "interval_minutes": 720,
       "tags": [
         "研究"
       ],
@@ -206,162 +192,54 @@
       "syndicate_fulltext": false
     },
     {
-      "id": "rss-the-verge-ai",
-      "name": "The Verge · AI",
-      "kind": "rss",
+      "id": "web-ncrcod-news",
+      "name": "眼和视光疾病国家临床医学研究中心",
+      "kind": "web_list",
       "config": {
-        "feedUrl": "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml",
+        "url": "https://www.ncrcod.ac.cn/",
+        "itemSelector": ".news-right .news-list > li",
+        "linkSelector": "a[href]",
+        "titleSelector": ".d1 font",
+        "allowUrlPrefixes": [
+          "https://mp.weixin.qq.com/s/"
+        ],
         "_aihot": {
-          "initialBackfillLimit": 8
-        }
+          "initialBackfillLimit": 12
+        },
+        "publishedAtSelector": ".d1 p"
       },
-      "tier": "T2",
-      "owner_entity_id": null,
+      "tier": "T1",
       "participation_mode": "editorial",
-      "interval_minutes": 60,
+      "interval_minutes": 480,
       "tags": [
-        "媒体"
+        "学术会议",
+        "研究"
       ],
       "site_fulltext": false,
       "syndicate_fulltext": false
     },
     {
-      "id": "rss-techcrunch-ai",
-      "name": "TechCrunch · AI",
-      "kind": "rss",
+      "id": "web-orient-optics-news",
+      "name": "东方国际展览眼镜展动态",
+      "kind": "web_list",
       "config": {
-        "feedUrl": "https://techcrunch.com/category/artificial-intelligence/feed/",
+        "url": "https://www.orientexhibition.com.hk/zh-hans/",
+        "itemSelector": "#news a.swiper-slide[data-path^=\"news/\"]",
+        "linkSelector": "a[href]",
+        "titleSelector": ".title",
+        "allowUrlPrefixes": [
+          "https://www.orientexhibition.com.hk/zh-hans/news/"
+        ],
         "_aihot": {
-          "initialBackfillLimit": 8
+          "initialBackfillLimit": 12
         }
       },
-      "tier": "T2",
-      "owner_entity_id": null,
+      "tier": "T1",
       "participation_mode": "editorial",
-      "interval_minutes": 60,
+      "interval_minutes": 480,
       "tags": [
-        "媒体"
-      ],
-      "site_fulltext": false,
-      "syndicate_fulltext": false
-    },
-    {
-      "id": "rss-ars-technica-ai",
-      "name": "Ars Technica · AI",
-      "kind": "rss",
-      "config": {
-        "feedUrl": "https://arstechnica.com/ai/feed/",
-        "_aihot": {
-          "initialBackfillLimit": 8
-        }
-      },
-      "tier": "T2",
-      "owner_entity_id": null,
-      "participation_mode": "editorial",
-      "interval_minutes": 60,
-      "tags": [
-        "媒体"
-      ],
-      "site_fulltext": false,
-      "syndicate_fulltext": false
-    },
-    {
-      "id": "rss-mit-tech-review-ai",
-      "name": "MIT Technology Review · AI",
-      "kind": "rss",
-      "config": {
-        "feedUrl": "https://www.technologyreview.com/topic/artificial-intelligence/feed",
-        "_aihot": {
-          "initialBackfillLimit": 8
-        }
-      },
-      "tier": "T2",
-      "owner_entity_id": null,
-      "participation_mode": "editorial",
-      "interval_minutes": 120,
-      "tags": [
-        "媒体"
-      ],
-      "site_fulltext": false,
-      "syndicate_fulltext": false
-    },
-    {
-      "id": "rss-the-decoder",
-      "name": "The Decoder",
-      "kind": "rss",
-      "config": {
-        "feedUrl": "https://the-decoder.com/feed/",
-        "_aihot": {
-          "initialBackfillLimit": 8
-        }
-      },
-      "tier": "T2",
-      "owner_entity_id": null,
-      "participation_mode": "editorial",
-      "interval_minutes": 60,
-      "tags": [
-        "媒体"
-      ],
-      "site_fulltext": false,
-      "syndicate_fulltext": false
-    },
-    {
-      "id": "rss-simon-willison",
-      "name": "Simon Willison",
-      "kind": "rss",
-      "config": {
-        "feedUrl": "https://simonwillison.net/atom/everything/",
-        "_aihot": {
-          "initialBackfillLimit": 8
-        }
-      },
-      "tier": "T2",
-      "owner_entity_id": null,
-      "participation_mode": "editorial",
-      "interval_minutes": 120,
-      "tags": [
-        "个人"
-      ],
-      "site_fulltext": false,
-      "syndicate_fulltext": false
-    },
-    {
-      "id": "rss-import-ai",
-      "name": "Import AI",
-      "kind": "rss",
-      "config": {
-        "feedUrl": "https://importai.substack.com/feed",
-        "_aihot": {
-          "initialBackfillLimit": 8
-        }
-      },
-      "tier": "T2",
-      "owner_entity_id": null,
-      "participation_mode": "editorial",
-      "interval_minutes": 180,
-      "tags": [
-        "个人",
-        "周刊"
-      ],
-      "site_fulltext": false,
-      "syndicate_fulltext": false
-    },
-    {
-      "id": "rss-latent-space",
-      "name": "Latent Space",
-      "kind": "rss",
-      "config": {
-        "feedUrl": "https://www.latent.space/feed",
-        "_aihot": {
-          "initialBackfillLimit": 8
-        }
-      },
-      "tier": "T2",
-      "owner_entity_id": null,
-      "participation_mode": "editorial",
-      "interval_minutes": 180,
-      "tags": [
-        "个人"
+        "行业展会",
+        "学术会议"
       ],
       "site_fulltext": false,
       "syndicate_fulltext": false
