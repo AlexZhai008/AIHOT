@@ -1,5 +1,5 @@
 {
-  "$comment": "待站点运营者确认的公开首批信源。仅展示摘要和原文链接。已有数据库的旧信源需在后台暂停。",
+  "$comment": "大连目立康业务相关的公开信源。按原始公告、监管记录、临床证据及专业会议信息选取，仅展示摘要和原文链接。",
   "sources": [
     {
       "id": "web-menicon-news",
@@ -241,6 +241,532 @@
         "行业展会",
         "学术会议"
       ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "web-menicon-japan-news",
+      "name": "目立康日本总部新闻",
+      "kind": "web_list",
+      "config": {
+        "url": "https://www.menicon.co.jp/company/news/",
+        "itemSelector": "li[entry_date]:has(a[href*='/company/news/vol'])",
+        "linkSelector": "a[href*='/company/news/vol']",
+        "publishedAtSelector": ".day",
+        "allowUrlPrefixes": [
+          "https://www.menicon.co.jp/company/news/vol"
+        ],
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T1",
+      "participation_mode": "editorial",
+      "interval_minutes": 720,
+      "tags": [
+        "产品",
+        "市场",
+        "研究"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "owner_entity_id": "menicon"
+    },
+    {
+      "id": "web-menicon-ifu",
+      "name": "目立康接触镜与护理产品说明书",
+      "kind": "web_list",
+      "config": {
+        "url": "https://www.menicon.com/consumer/ifu",
+        "itemSelector": "#ir-blog-container a.single-col-content:has(.tagged-name:contains('Lens Care Products')), #ir-blog-container a.single-col-content:has(.tagged-name:contains('MTO Specialty Lenses'))",
+        "linkSelector": "a.single-col-content",
+        "titleSelector": "h4",
+        "publishedAtSelector": ".publish-date",
+        "allowUrlPrefixes": [
+          "https://www.menicon.com/consumer/ifu/"
+        ],
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T1",
+      "participation_mode": "editorial",
+      "interval_minutes": 1440,
+      "tags": [
+        "产品",
+        "护理液"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "owner_entity_id": "menicon"
+    },
+    {
+      "id": "web-alpha-china-notices",
+      "name": "阿迩发中国公告",
+      "kind": "web_list",
+      "config": {
+        "url": "https://www.alphacl.cn/news/",
+        "itemSelector": ".m-list-news li",
+        "linkSelector": "a[href]",
+        "titleSelector": ".news-ttl",
+        "publishedAtSelector": ".news-date",
+        "allowUrlPrefixes": [
+          "https://www.alphacl.cn/news/"
+        ],
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T1",
+      "participation_mode": "editorial",
+      "interval_minutes": 1440,
+      "tags": [
+        "产品",
+        "市场"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "owner_entity_id": "menicon"
+    },
+    {
+      "id": "rss-euclid-news",
+      "name": "Euclid Vision 官方新闻",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://euclidlenses.com/category/news/feed/",
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T1",
+      "participation_mode": "editorial",
+      "interval_minutes": 720,
+      "tags": [
+        "产品",
+        "市场"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "owner_entity_id": "euclid"
+    },
+    {
+      "id": "json-fda-orthok-pma",
+      "name": "美国 FDA 角膜塑形镜 PMA 决定",
+      "kind": "json_list",
+      "config": {
+        "url": "https://api.fda.gov/device/pma.json?search=product_code%3ANUU&sort=decision_date%3Adesc&limit=12",
+        "mode": "json_api",
+        "itemsPath": "results",
+        "titlePaths": [
+          "trade_name",
+          "generic_name"
+        ],
+        "urlTemplate": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpma/pma.cfm?id={pma_number}{supplement_number}",
+        "publishedAtPath": "decision_date",
+        "urlTemplateFallback": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpma/pma.cfm?id={pma_number}",
+        "authorPaths": [
+          "applicant"
+        ],
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T1",
+      "participation_mode": "editorial",
+      "interval_minutes": 1440,
+      "tags": [
+        "政策/监管",
+        "角膜塑形镜"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "json-fda-contact-lens-care-510k",
+      "name": "美国 FDA 接触镜护理产品 510(k) 许可",
+      "kind": "json_list",
+      "config": {
+        "url": "https://api.fda.gov/device/510k.json?search=product_code%3A(MRC%20OR%20LPN)%20AND%20decision_code%3ASESE&sort=decision_date%3Adesc&limit=12",
+        "mode": "json_api",
+        "itemsPath": "results",
+        "titlePaths": [
+          "device_name"
+        ],
+        "urlTemplate": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID={k_number}",
+        "publishedAtPath": "decision_date",
+        "externalIdPath": "k_number",
+        "authorPaths": [
+          "applicant"
+        ],
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T1",
+      "participation_mode": "editorial",
+      "interval_minutes": 1440,
+      "tags": [
+        "政策/监管",
+        "护理液"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-international-myopia-institute",
+      "name": "国际近视研究学会 IMI 动态",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://myopiainstitute.org/feed/",
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T1",
+      "participation_mode": "editorial",
+      "interval_minutes": 1440,
+      "tags": [
+        "研究",
+        "近视管理",
+        "学术会议"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "json-clinicaltrials-orthok",
+      "name": "ClinicalTrials.gov 角膜塑形镜试验登记",
+      "kind": "json_list",
+      "config": {
+        "url": "https://clinicaltrials.gov/api/v2/studies?query.term=orthokeratology%20OR%20%22ortho-k%22&sort=StudyFirstPostDate%3Adesc&pageSize=12",
+        "mode": "json_api",
+        "itemsPath": "studies",
+        "titlePaths": [
+          "protocolSection.identificationModule.briefTitle"
+        ],
+        "urlTemplate": "https://clinicaltrials.gov/study/{protocolSection.identificationModule.nctId}",
+        "publishedAtPath": "protocolSection.statusModule.studyFirstPostDateStruct.date",
+        "externalIdPath": "protocolSection.identificationModule.nctId",
+        "authorPaths": [
+          "protocolSection.sponsorCollaboratorsModule.leadSponsor.name"
+        ],
+        "summaryPaths": [
+          "protocolSection.descriptionModule.briefSummary"
+        ],
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T1",
+      "participation_mode": "editorial",
+      "interval_minutes": 1440,
+      "tags": [
+        "研究",
+        "角膜塑形镜"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "web-bcla-press",
+      "name": "英国接触镜协会 BCLA 公告",
+      "kind": "web_list",
+      "config": {
+        "url": "https://www.bcla.org.uk/Public/Public/News/Press-Releases.aspx",
+        "itemSelector": ".BlockTLItem:has(h4 a[href*='Press_Release/'])",
+        "linkSelector": "h4 a[href]",
+        "publishedAtSelector": ".PublishDate span",
+        "allowUrlPrefixes": [
+          "https://www.bcla.org.uk/Public/News/Press_Release/",
+          "https://www.bcla.org.uk/Public/Public/News/Press_Release/"
+        ],
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T1",
+      "participation_mode": "editorial",
+      "interval_minutes": 720,
+      "tags": [
+        "学术会议",
+        "研究"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "web-eyebright-industry-news",
+      "name": "爱博医疗视光与行业动态",
+      "kind": "web_list",
+      "config": {
+        "url": "https://www.ebmedical.com/about/newscenter/hynews/",
+        "itemSelector": ".news-container .upnew > a[href]",
+        "linkSelector": "a[href]",
+        "titleSelector": "h3",
+        "publishedAtSelector": ".con_extra span",
+        "allowUrlPrefixes": [
+          "https://www.ebmedical.com/about/newscenter/hynews/"
+        ],
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T1",
+      "participation_mode": "editorial",
+      "interval_minutes": 720,
+      "tags": [
+        "市场",
+        "学术会议",
+        "研究"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "owner_entity_id": "eyebright"
+    },
+    {
+      "id": "web-lucid-korea-news",
+      "name": "露晰得韩国官网媒体报道",
+      "kind": "web_list",
+      "config": {
+        "url": "https://lucid.co.kr/board/board.php?bbsid=news",
+        "itemSelector": "a[href*='bbsid=news'][href*='idx=']:has(.tit)",
+        "linkSelector": "a[href]",
+        "titleSelector": ".tit",
+        "publishedAtSelector": ".date",
+        "allowUrlPrefixes": [
+          "https://lucid.co.kr/board/board.php?bbsid=news&idx=",
+          "https://www.lucid.co.kr/board/board.php?bbsid=news&idx="
+        ],
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T1_5",
+      "participation_mode": "editorial",
+      "interval_minutes": 720,
+      "tags": [
+        "产品",
+        "市场"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "web-ophtecs-news",
+      "name": "Ophtecs 日本官网公告",
+      "kind": "web_list",
+      "config": {
+        "url": "https://ophtecs.co.jp/info",
+        "itemSelector": "a[href*='/info-post/']:has(.postItem__info)",
+        "linkSelector": "a[href]",
+        "titleSelector": ".description h3",
+        "publishedAtSelector": ".description p",
+        "allowUrlPrefixes": [
+          "https://ophtecs.co.jp/info-post/"
+        ],
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T1",
+      "participation_mode": "editorial",
+      "interval_minutes": 720,
+      "tags": [
+        "护理液",
+        "产品",
+        "市场"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "web-coopervision-china-news",
+      "name": "库博光学中文新闻中心",
+      "kind": "web_list",
+      "config": {
+        "url": "https://coopervision.com.cn/about-coopervision/news-center",
+        "itemSelector": ".cv-press-release--teaser",
+        "linkSelector": ".cv-press-release--teaser__title a",
+        "titleSelector": ".cv-press-release--teaser__title a",
+        "allowUrlPrefixes": [
+          "https://coopervision.com.cn/our-company/news-center/press-release/"
+        ],
+        "detail": {
+          "maxFetches": 8,
+          "publishedAtSelector": "meta[property='article:published_time']"
+        },
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T1",
+      "participation_mode": "editorial",
+      "interval_minutes": 720,
+      "tags": [
+        "产品",
+        "市场",
+        "学术会议"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "owner_entity_id": "coopervision"
+    },
+    {
+      "id": "web-zeiss-myopia-news",
+      "name": "蔡司近视管理官方新闻",
+      "kind": "web_list",
+      "config": {
+        "url": "https://www.zeiss.com/vision-care/en/newsroom/vision-care-press-kits/myopia-management.html",
+        "itemSelector": "a.article-teaser-item__content-link[href*='/newsroom/news/']",
+        "linkSelector": "a.article-teaser-item__content-link",
+        "titleSelector": ".headline__main",
+        "publishedAtSelector": ".article-teaser-item__eyebrow--sub",
+        "allowUrlPrefixes": [
+          "https://www.zeiss.com/vision-care/en/newsroom/news/"
+        ],
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T1",
+      "participation_mode": "editorial",
+      "interval_minutes": 720,
+      "tags": [
+        "近视管理",
+        "市场",
+        "研究"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "owner_entity_id": "zeiss"
+    },
+    {
+      "id": "web-zeiss-refraction-news",
+      "name": "蔡司验光与筛查官方新闻",
+      "kind": "web_list",
+      "config": {
+        "url": "https://www.zeiss.com/vision-care/en/newsroom/vision-care-press-kits/refraction-and-screening.html",
+        "itemSelector": "a.article-teaser-item__content-link[href*='/newsroom/news/']",
+        "linkSelector": "a.article-teaser-item__content-link",
+        "titleSelector": ".headline__main",
+        "publishedAtSelector": ".article-teaser-item__eyebrow--sub",
+        "allowUrlPrefixes": [
+          "https://www.zeiss.com/vision-care/en/newsroom/news/"
+        ],
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T1",
+      "participation_mode": "editorial",
+      "interval_minutes": 720,
+      "tags": [
+        "验配设备",
+        "技术进展"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "owner_entity_id": "zeiss"
+    },
+    {
+      "id": "web-brighten-optix-news",
+      "name": "亨泰光学官方动态",
+      "kind": "web_list",
+      "config": {
+        "url": "https://www.brightenoptix.com/index.htm",
+        "itemSelector": "a.newsList__item[href^='news-detail']",
+        "linkSelector": "a.newsList__item",
+        "titleSelector": ".tt",
+        "publishedAtSelector": "time, .date, .time, .dd",
+        "allowUrlPrefixes": [
+          "https://www.brightenoptix.com/news-detail"
+        ],
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T1",
+      "participation_mode": "editorial",
+      "interval_minutes": 720,
+      "tags": [
+        "角膜塑形镜",
+        "产品",
+        "市场"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "owner_entity_id": "zeiss"
+    },
+    {
+      "id": "web-moe-myopia-policy",
+      "name": "教育部近视防控政策与活动通知",
+      "kind": "web_list",
+      "config": {
+        "url": "https://www.moe.gov.cn/jyb_xxgk/xxgk/neirong/fenlei/sxml_twyjy/twyjy_tyws/tyws_xgzc/",
+        "itemSelector": "dd > a[title*='近视'], dd > a[title*='爱眼'], dd > a[title*='眼健康']",
+        "linkSelector": "a[href]",
+        "publishedAtSelector": ".x_gkndbg_pcdate",
+        "allowUrlPrefixes": [
+          "https://www.moe.gov.cn/srcsite/"
+        ],
+        "detail": {
+          "maxFetches": 8,
+          "titleSelector": "h1",
+          "titleAuthoritative": true
+        },
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T1",
+      "tags": [
+        "政策/监管",
+        "近视管理"
+      ],
+      "participation_mode": "editorial",
+      "interval_minutes": 1440,
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-bhvi-myopia-news",
+      "name": "BHVI 近视研究与公众活动",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://bhvi.org/feed/",
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T1",
+      "tags": [
+        "近视管理",
+        "研究",
+        "市场推广"
+      ],
+      "participation_mode": "editorial",
+      "interval_minutes": 1440,
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-review-myopia-practice-management",
+      "name": "Review of Myopia Management 机构运营与推广",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://reviewofmm.com/category/practice-management/feed/",
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T2",
+      "tags": [
+        "近视管理",
+        "市场推广",
+        "渠道合作"
+      ],
+      "participation_mode": "editorial",
+      "interval_minutes": 1440,
       "site_fulltext": false,
       "syndicate_fulltext": false
     }

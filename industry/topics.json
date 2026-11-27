@@ -84,6 +84,17 @@
       "definition": "相关角膜塑形镜的产品、临床和渠道动态。"
     },
     {
+      "slug": "zeiss",
+      "name": "蔡司",
+      "group": "company",
+      "entityId": "zeiss",
+      "aliases": [
+        "ZEISS",
+        "蔡司光学"
+      ],
+      "definition": "与近视管理、角膜塑形镜业务、临床研究及视光验配设备相关的蔡司动态。"
+    },
+    {
       "slug": "orthokeratology",
       "name": "角膜塑形镜",
       "group": "field",

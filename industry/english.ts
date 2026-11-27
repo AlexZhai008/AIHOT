@@ -20,7 +20,7 @@ export const TAG_EN: Record<string, string> = {
   行业动态: "Industry news", 行业解读: "Industry analysis", 其他: "Other",
   角膜塑形镜: "Orthokeratology lenses", 护理液: "Lens care solutions", 硬性接触镜: "Rigid contact lenses", 近视管理: "Myopia management",
   验配设备: "Lens fitting equipment", 镜片材料: "Lens materials", 镜片设计: "Lens design", 临床证据: "Clinical evidence",
-  目立康: "Menicon", 欧普康视: "OVCTEK", 爱博医疗: "Eyebright Medical", 库博光学: "CooperVision", 博士伦: "Bausch + Lomb", Euclid: "Euclid",
+  目立康: "Menicon", 欧普康视: "OVCTEK", 爱博医疗: "Eyebright Medical", 库博光学: "CooperVision", 博士伦: "Bausch + Lomb", Euclid: "Euclid", 蔡司: "ZEISS",
 };
 
 export const TOPIC_EN: Record<string, { name: string; definition: string }> = {
@@ -30,6 +30,7 @@ export const TOPIC_EN: Record<string, { name: string; definition: string }> = {
   coopervision: { name: "CooperVision", definition: "Products, clinical research and market activity in orthokeratology and myopia management." },
   "bausch-lomb": { name: "Bausch + Lomb", definition: "Developments in rigid lens care and related contact lens products." },
   euclid: { name: "Euclid", definition: "Orthokeratology products, research and sales channels." },
+  zeiss: { name: "ZEISS", definition: "Myopia management, orthokeratology, clinical research and lens fitting equipment." },
   orthokeratology: { name: "Orthokeratology lenses", definition: "Lens design, development, approvals, launches and fitting." },
   "lens-care": { name: "Lens care solutions", definition: "Cleaning, disinfection, storage and protein removal products for rigid lenses and orthokeratology." },
   fitting: { name: "Lens fitting equipment", definition: "Corneal topography, measurement tools and fitting equipment." },

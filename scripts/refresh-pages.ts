@@ -6,7 +6,6 @@ import { registerContentJobs, registerExtractionJobs, sweepUnprocessed } from "@
 import { registerEventJobs, sweepUngrouped } from "@aihot/backend/jobs/events";
 import { getBoss, QUEUES, stopBoss } from "@aihot/backend/jobs/queue";
 import { installModules } from "@aihot/backend/modules";
-import { composeDueReports } from "@aihot/backend/reports/compose";
 import { collectSource } from "@aihot/backend/sources/collect";
 import { SERVER_MODULES } from "@aihot/site/modules/server";
 
@@ -47,7 +46,6 @@ try {
   await sweepUngrouped();
   await waitForPublications();
   await computeHotRanking();
-  console.log(JSON.stringify(await composeDueReports()));
 } finally {
   await stopBoss();
   await closeDb();

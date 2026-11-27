@@ -36,7 +36,7 @@ export const TOPIC_TAGS = [
   "角膜塑形镜", "护理液", "硬性接触镜", "近视管理", "验配设备", "镜片材料", "镜片设计", "临床证据",
 ] as const;
 
-export const ENTITY_TAGS = ["目立康", "欧普康视", "爱博医疗", "库博光学", "博士伦", "Euclid"] as const;
+export const ENTITY_TAGS = ["目立康", "欧普康视", "爱博医疗", "库博光学", "博士伦", "Euclid", "蔡司"] as const;
 
 export const TAG_SYNONYMS: Readonly<Record<string, string>> = {
   "OK镜": "角膜塑形镜", "OK 镜": "角膜塑形镜", "Ortho-K": "角膜塑形镜", RGP: "硬性接触镜",
@@ -59,6 +59,7 @@ export const ENTITIES: Record<string, { name: string; displayTag: string | null;
   coopervision: { name: "库博光学", displayTag: "库博光学", aliases: ["库博光学", "CooperVision", "Paragon CRT"], orgNames: ["库博光学", "CooperVision"] },
   "bausch-lomb": { name: "博士伦", displayTag: "博士伦", aliases: ["博士伦", "Bausch + Lomb", "Bausch & Lomb", "Boston Simplus"], orgNames: ["博士伦", "Bausch + Lomb"] },
   euclid: { name: "Euclid", displayTag: "Euclid", aliases: ["美国欧几里得", "欧几里得角膜塑形镜", "Euclid Vision", "Euclid Systems", "Euclid Ortho-K"], orgNames: ["Euclid Vision", "Euclid Systems"] },
+  zeiss: { name: "蔡司", displayTag: "蔡司", aliases: ["蔡司", "蔡司光学", "ZEISS", "ZEISS Vision Care", "Carl Zeiss"], orgNames: ["蔡司光学", "ZEISS Vision Care", "Carl Zeiss"] },
 };
 
 export const IDENTITY_LEXICON: ReadonlyArray<{ id: string; name: string; patterns: RegExp[] }> = [
@@ -68,6 +69,7 @@ export const IDENTITY_LEXICON: ReadonlyArray<{ id: string; name: string; pattern
   { id: "coopervision", name: "库博光学", patterns: [/库博光学|\bcoopervision\b|\bparagon crt\b/i] },
   { id: "bausch-lomb", name: "博士伦", patterns: [/博士伦|\bbausch\s*(?:[+&]|and)\s*lomb\b|\bboston simplus\b/i] },
   { id: "euclid", name: "Euclid", patterns: [/美国欧几里得|欧几里得角膜塑形镜|\beuclid (?:vision|systems|ortho-?k)\b/i] },
+  { id: "zeiss", name: "蔡司", patterns: [/蔡司|\bzeiss\b/i] },
 ];
 
 export const PUBLISHER_DOMAINS: ReadonlyArray<{ entityId: string; domains: readonly string[] }> = [
@@ -77,6 +79,7 @@ export const PUBLISHER_DOMAINS: ReadonlyArray<{ entityId: string; domains: reado
   { entityId: "coopervision", domains: ["coopervision.com"] },
   { entityId: "bausch-lomb", domains: ["bausch.com", "bauschcontactlenses.com"] },
   { entityId: "euclid", domains: ["euclidlenses.com"] },
+  { entityId: "zeiss", domains: ["zeiss.com", "zeiss.com.cn"] },
 ];
 
 export const IDENTITY_CONTEXT_ALIASES: ReadonlyArray<{ entityId: string; pattern: RegExp }> = [];

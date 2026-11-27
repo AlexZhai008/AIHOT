@@ -7,8 +7,37 @@
 - 仓库 Settings → Pages 的 Source 选 GitHub Actions，Custom domain 填 `menicon.mollylisa.com`。
 - 仓库 Actions secrets 配置 `LLM_API_KEY` 和用于加密数据库检查点的 `PAGES_STATE_KEY`。模型默认使用 OpenAI 的 `gpt-4.1-mini`。使用其他 OpenAI 兼容服务时，设置同名仓库变量 `LLM_BASE_URL` 和 `LLM_MODEL`。
 - 模型密钥还未配置时，手动运行可发布站点框架或已有快照，定时任务会暂停采集。配置后手动运行一次即可开始收录。
+- 到期报告由独立步骤生成。首次采集的历史文章可进入公开资讯，但不计入当期日报。报告步骤失败时，Actions 会保留错误日志，并继续导出网站、RSS 和数据库检查点。
 - 每轮从最近的加密检查点恢复文章和编辑历史。公开站点只上传静态页面和 RSS。检查点在 Actions 中保留 30 天，恢复既有历史需要原加密密钥和至少一份检查点。
 - Pages 版提供精选、全部动态、热点榜、主题、文章摘要和报告订阅。后台、反馈提交、实时 API 和 MCP 由容器部署版提供。
+
+### 竞品公众号与官网
+
+| 竞品 | 官方入口 | 重点监测 |
+| --- | --- | --- |
+| 欧普康视 | [公司官网](https://www.orthok.cn/)及官网公布的微信公众号「欧普康视」和品牌账号「梦戴维官方」 | 梦戴维、DreamVision、镜特舒，跟踪新品、护理品、验配培训和渠道推广 |
+| 爱博医疗 | [行业新闻](https://www.ebmedical.com/about/newscenter/hynews/)及[公司公布的「iBright普诺瞳」「iBright学术汇」账号矩阵](https://ebmedical.com/about/newscenter/shzr/2025-08-27/452.html) | 普诺瞳角膜塑形镜、护理液、临床专题会与参展活动 |
+| 露晰得 | [中国官网「露晰得官方微信」入口](https://www.lucidkorea.com/index.html)和[韩国官网媒体报道](https://lucid.co.kr/board/board.php?bbsid=news) | 角膜塑形镜、散光片、RGP、市场活动与培训 |
+| 库博光学 | [中文新闻中心](https://coopervision.com.cn/about-coopervision/news-center)和[全球新闻中心](https://coopervision.com/our-company/news-center/all) | Paragon CRT、DreamLite、MiSight、近视管理培训与展会 |
+| Euclid Vision | [官方新闻](https://euclidlenses.com/category/news/) | Ortho-K、近视管理镜片、获批、验配平台和渠道合作 |
+| 博士伦 | [中国博视顿产品入口](https://www.bausch.com.cn/bsdcp.html)及[全球新闻](https://www.bausch.com/newsroom/news/) | 博视顿硬镜护理、包装与说明书更新、Arise 角膜塑形镜及验配系统 |
+| Ophtecs | [日本官网公告](https://ophtecs.co.jp/info)及 [cleadew 产品入口](https://ophtecs.co.jp/products/cleadew) | cleadew 系列、硬镜护理产品、培训及市场推广 |
+| 蔡司及亨泰光学 | [蔡司近视管理新闻](https://www.zeiss.com/vision-care/en/newsroom/vision-care-press-kits/myopia-management.html)、[验光与筛查新闻](https://www.zeiss.com/vision-care/en/newsroom/vision-care-press-kits/refraction-and-screening.html)、[亨泰光学官网](https://www.brightenoptix.com/)及[蔡司 OPH 公众号官方入口](https://mini.zeiss.com.cn/official/index.html) | 亨泰角膜塑形镜，蔡司 MyoCare、MyoActive、MYO 200，近视管理研究、验配设备与专业培训 |
+
+公众号优先从企业官网入口核对认证主体，在账号资料中确认原始 ID 后再加入采集配置。公众号自动采集使用极致了（Dajiala），按请求计费。Pages 版接入时需要通过 Actions 工作流把密钥传给后端 `DAJIALA_KEY`，并设置请求预算。官网来源的自动采集配置见 [行业信源](../industry/sources.json)。中国注册及召回状态以[国家药监局注册查询](https://www.nmpa.gov.cn/zwfwqjd/index.html)和[召回公告](https://www.nmpa.gov.cn/directory/web/nmpa/xxgk/chpzhh/ylqxzhh/index.html)为准。
+
+### 市场活动的前置信息
+
+| 信号 | 查阅入口 | 用于活动策划 |
+| --- | --- | --- |
+| 国内宣传节点 | [教育部体育卫生政策文件](https://www.moe.gov.cn/jyb_xxgk/xxgk/neirong/fenlei/sxml_twyjy/twyjy_tyws/tyws_xgzc/)及[近视防控宣传教育月通知](https://www.moe.gov.cn/srcsite/A17/moe_943/s3285/202609/t20260909_1449929.html) | 提前准备与正式主题相符的家长科普、门诊讲座和渠道培训 |
+| 征稿、招展和议程 | [BCLA 征稿及工作坊](https://www.bcla.org.uk/Public/Events/2027%20Conference/BCLA-2027-Abstract%20Submissions.aspx?WebsiteKey=e545a33e-7198-42c2-b71d-98c5511ba8e5)、[GSLS 参展与赞助](https://gslsymposium.com/live/2/page/41)、[SIOF 展商名录](https://www.siof.cn/zh-hans/fair/listing/)及 [Vision China 主办方](https://vision2026.reed-sinopharm.com/cn/web/index/) | 追踪新议题、讲者、赞助方和竞品展位，在会前确定专题、演示环节和邀请对象 |
+| 行业活动方式与物料 | [BHVI 近视意识周](https://bhvi.org/maw2026/)、[Review of Myopia Management 推广案例](https://reviewofmm.com/category/practice-management/marketing-promotion/)、[库博 MiSight 营销工具包](https://coopervision.com/practitioner/build-your-practice/marketing-support/marketing-materials/misight-1-day)及 [WHO MyopiaEd](https://www.who.int/publications/i/item/9789240042377) | 参考活动主题、参与对象、线上线下组合和评估方法，设计本站受众适用的原创物料 |
+| 技术与研究的早期线索 | [WIPO PATENTSCOPE](https://www.wipo.int/en/web/patentscope/)及 [ClinicalTrials.gov](https://clinicaltrials.gov/) | 按企业和产品跟踪镜片设计、护理、验配技术及试验进度；用后续独立来源确认获批和上市阶段 |
+
+记录竞品活动时优先填受众、合作对象、活动形式、渠道、物料、开始与截止日期，以及原文披露的结果。将征稿、招展和招募标为预告，将厂商公布的成效和研究结果按原文归因。可优先策划眼视光从业者的验配案例工作坊，以及由合作眼视光机构组织的家长近视管理与镜片护理课堂。分别用实际参与人数、报名到场率和课后反馈评估活动。
+
+教育部政策列表、BHVI 新闻和 Review of Myopia Management 机构运营订阅已配置自动采集。上述展会名录、工具包及 PATENTSCOPE 是人工查阅入口；BCLA 新闻和 ClinicalTrials.gov 试验登记也有自动采集配置。
 
 ## 用 Docker（推荐）
 

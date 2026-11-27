@@ -12,6 +12,7 @@ import { loadTimeline } from "@aihot/backend/publication/timeline";
 import { listTopicSummaries, loadTopicPage } from "@aihot/backend/publication/topics";
 import { type FeedItemSummary, type ReportCitation } from "@aihot/contracts/site";
 import { categoryLabel } from "@aihot/contracts/taxonomy";
+import { beijingDate, beijingTime } from "@aihot/contracts/time";
 import { CATEGORIES } from "@aihot/industry/taxonomy";
 import { SITE } from "@aihot/site";
 
@@ -19,8 +20,7 @@ const output = path.resolve(process.argv[2] ?? "dist/pages");
 const siteUrl = new URL(`${config.siteUrl}/`);
 const base = siteUrl.pathname.replace(/\/$/, "");
 const now = new Date();
-const format = new Intl.DateTimeFormat("zh-CN", { timeZone: "Asia/Shanghai", dateStyle: "medium", timeStyle: "short" });
-const date = (value: string | Date) => format.format(new Date(value));
+const date = (value: string | Date) => `${beijingDate(value)} ${beijingTime(value)}`;
 const html = (value: string | number) => String(value).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
 const url = (route: string) => html(`${base}${route}`);
 const paragraph = (text: string | null | undefined) => text ? `<p>${html(text)}</p>` : "";
